@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VetCare - Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to bottom right, #fffdf5, #f3e0c7);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #c89f68;
+      color: white;
+      padding: 15px 0;
+    }
+
+    .nav-link {
+      color: white !important;
+      margin-left: 25px;
+      font-weight: 500;
+    }
+
+    .hero-wrapper {
+      width: 100%;
+      max-width: 900px;
+      margin: 30px auto 20px auto;
+      padding: 0;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .hero-img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      display: block;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      transition: transform 0.4s ease;
+    }
+
+    .hero-wrapper:hover .hero-img {
+      transform: scale(1.01);
+    }
+
+    .main-section {
+      padding: 30px 20px 60px;
+      text-align: center;
+    }
+
+    .book-btn {
+      background-color: #c89f68;
+      color: white;
+      border-radius: 30px;
+      padding: 12px 30px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease-in-out;
+      text-decoration: none;
+    }
+
+    .book-btn:hover {
+      background-color: #dcb177;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    }
+
+    .paw-icon {
+      font-size: 1.6rem;
+      transform: rotate(-20deg);
+      background-color: #fff3e0;
+      border-radius: 50%;
+      padding: 5px 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #a36c29;
+      margin-right: 10px;
+    }
+
+    .info-card {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container d-flex justify-content-between align-items-center">
+    <h2 class="mb-0">VetCare</h2>
+    <nav>
+      <a href="index.html" class="nav-link d-inline">Home</a>
+      <a href="book.html" class="nav-link d-inline">Book Appointment</a>
+      <a href="admin/admin_login.php" class="nav-link d-inline">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container main-section">
+  <div class="hero-wrapper">
+    <img src="images/happy-labrador.jpg" alt="Happy Labrador" class="hero-img" />
+  </div>
+
+  <h1 class="mb-3">Welcome to VetCare</h1>
+  <p class="lead mb-4">A place where your pet's health comes first. Friendly, professional, and full of love!</p>
+
+  <div class="text-center mb-5">
+    <a href="book.html" class="btn btn-lg d-inline-flex align-items-center gap-2 book-btn">
+      <span class="paw-icon">🐾</span> Book Appointment
+    </a>
+  </div>
+
+  <div class="row text-center g-4 mt-4">
+    <div class="col-md-4">
+      <div class="info-card p-4">
+        <h5 class="mb-3">Opening Hours</h5>
+        <p><strong>Mon – Fri:</strong> 08:00 – 17:00</p>
+        <p><strong>Saturday:</strong> 10:00 – 14:00</p>
+        <p><strong>Sunday:</strong> Closed</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="info-card p-4">
+        <h5 class="mb-3">Contact</h5>
+        <p><strong>Phone:</strong> 0740 000 000</p>
+        <p><strong>Email:</strong> contact@vetcareclinic.ro</p>
+        <p><strong>Address:</strong> Str. Animaluțelor 15, Timișoara</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="info-card p-4">
+        <h5 class="mb-3">Our Services</h5>
+        <p>Consultations, Vaccinations, Surgery, Grooming, Ultrasound, Emergency Care</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <small>VetCare Clinic &copy; 2025 - All rights reserved</small>
+</footer>
+
+</body>
+</html>
