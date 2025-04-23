@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/db.php';
 
 if (!isset($_SESSION["admin_logged_in"])) {
-  header("Location: admin_login.php");
+  header("Location: login.php");
   exit;
 }
 
@@ -72,8 +72,8 @@ $result = $conn->query("SELECT * FROM appointments ORDER BY appointment_date ASC
   <div class="container d-flex justify-content-between align-items-center">
     <h2 class="mb-0">VetCare</h2>
     <nav>
-      <a href="../index.html" class="nav-link d-inline">Home</a>
-      <a href="admin_logout.php" class="nav-link d-inline">Logout</a>
+      <a href="/vetcare_project/public/index.html" class="nav-link d-inline">Home</a>
+      <a href="/vetcare_project/admin/logout.php" class="nav-link d-inline">Logout</a>
     </nav>
   </div>
 </header>

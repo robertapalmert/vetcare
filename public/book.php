@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db.php';
+require_once '../includes/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pet_name = $_POST["pet_name"];

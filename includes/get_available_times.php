@@ -1,5 +1,5 @@
 <?php 
-require_once 'db.php'; // Conectarea la baza de date 
+require_once __DIR__ . '/db.php'; // Conectarea la baza de date 
 
 if (!isset($_GET['date']) || !isset($_GET['duration'])) {
     echo json_encode([]);

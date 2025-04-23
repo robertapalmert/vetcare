@@ -13,10 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($result->num_rows === 1) {
     $_SESSION["admin_logged_in"] = true;
-    header("Location: admin_dashboard.php");
+    header("Location: dashboard.php");
     exit;
   } else {
-    echo "<script>alert('Invalid credentials'); window.location.href = 'admin_login.php';</script>";
+    echo "<script>alert('Invalid credentials'); window.location.href = 'login.php';</script>";
   }
 }
 ?>
@@ -89,8 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <div class="container d-flex justify-content-between align-items-center">
     <h2 class="mb-0">VetCare</h2>
     <nav>
-      <a href="../index.html" class="nav-link d-inline">Home</a>
-      <a href="../book.html" class="nav-link d-inline">Book Appointment</a>
+      <a href="/vetcare_project/public/index.html" class="nav-link d-inline">Home</a>
+      <a href="/vetcare_project/public/book.html" class="nav-link d-inline">Book Appointment</a>
     </nav>
   </div>
 </header>
