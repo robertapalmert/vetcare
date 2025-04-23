@@ -93,39 +93,39 @@
   <form action="book.php" method="POST">
 
     <div class="form-group mb-3">
-      <label>Pet Name</label>
-      <input type="text" class="form-control" name="pet_name" required />
+      <label for="pet_name">Pet Name</label>
+      <input type="text" class="form-control" name="pet_name" id="pet_name" required />
     </div>
 
     <div class="form-group mb-3">
-      <label>Owner Name</label>
-      <input type="text" class="form-control" name="owner_name" required />
+      <label for="owner_name">Owner Name</label>
+      <input type="text" class="form-control" name="owner_name" id="owner_name" required />
     </div>
 
     <div class="form-group mb-3">
-      <label>Phone</label>
-      <input type="text" class="form-control" name="phone" required />
+      <label for="phone">Phone</label>
+      <input type="tel" class="form-control" name="phone" id="phone" pattern="^\+?\d{10,15}$" required />
     </div>
 
     <div class="form-group mb-3">
-      <label>Service / Reason</label>
+      <label for="reason">Service / Reason</label>
       <select name="reason" id="reason" class="form-select" required>
         <option value="">Select a Service</option>
-        <option value="Consultation" data-duration="30">Consultation (30 min)</option>
-        <option value="Vaccination" data-duration="20">Vaccination (20 min)</option>
-        <option value="Surgery" data-duration="120">Surgery (2 hours)</option>
-        <option value="Grooming" data-duration="45">Grooming (45 min)</option>
-        <option value="Others" data-duration="30">Others (30 min)</option>
+        <option value="Consultation">Consultation (30 min)</option>
+        <option value="Vaccination">Vaccination (20 min)</option>
+        <option value="Surgery">Surgery (2 hours)</option>
+        <option value="Grooming">Grooming (45 min)</option>
+        <option value="Others">Others (30 min)</option>
       </select>
     </div>
 
     <div class="form-group mb-3">
-      <label>Appointment Date</label>
+      <label for="appointment_date">Appointment Date</label>
       <input type="date" class="form-control" name="appointment_date" id="appointment_date" required />
     </div>
 
     <div class="form-group mb-4">
-      <label>Appointment Time</label>
+      <label for="appointment_time">Appointment Time</label>
       <select name="appointment_time" id="appointment_time" class="form-select" required>
         <option value="">Select Time</option>
       </select>
@@ -143,42 +143,113 @@
   <small>VetCare Clinic &copy; 2025 - All rights reserved</small>
 </footer>
 
-<!-- Scriptul magic -->
+<!-- Script pentru validarea datei și ore disponibile -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const reasonSelect = document.getElementById('reason');
-  const dateInput = document.getElementById('appointment_date');
-  const timeSelect = document.getElementById('appointment_time');
+  document.addEventListener('DOMContentLoaded', function () {
+    const reasonSelect = document.getElementById('reason');
+    const dateInput = document.getElementById('appointment_date');
+    const timeSelect = document.getElementById('appointment_time');
 
-  function loadAvailableTimes() {
-    const selectedDate = dateInput.value;
-    const selectedReason = reasonSelect.value;
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
 
-    if (selectedDate && selectedReason) {
-      fetch(`includes/get_available_times.php?date=${selectedDate}&reason=${selectedReason}`)
+    const holidays = ['2025-01-01', '2025-04-20', '2025-12-25'];
+
+    function resetTimeOptions() {
+      timeSelect.innerHTML = '<option value="">Select Time</option>';
+    }
+
+    function getServiceDuration(service) {
+      switch (service) {
+        case 'Consultation': return 30;
+        case 'Vaccination': return 20;
+        case 'Surgery': return 120;
+        case 'Grooming': return 45;
+        case 'Others': return 30;
+        default: return 0;
+      }
+    }
+
+    function isDateValid(date) {
+      const selected = new Date(date);
+      const day = selected.getDay();
+      return day !== 0 && !holidays.includes(date);
+    }
+
+    function fetchAvailableTimes() {
+      const date = dateInput.value;
+      const service = reasonSelect.value;
+      const duration = getServiceDuration(service);
+
+      console.log(`Trimit: date=${date}, duration=${duration}`);
+
+      if (!date || !service || !isDateValid(date)) {
+        resetTimeOptions();
+        return;
+      }
+
+      fetch(`includes/get_available_times.php?date=${date}&duration=${duration}`)
         .then(response => response.json())
         .then(data => {
-          timeSelect.innerHTML = '<option value="">Select Time</option>';
+          resetTimeOptions();
           if (data.length === 0) {
-            timeSelect.innerHTML += '<option disabled>No available times</option>';
-          } else {
-            data.forEach(time => {
-              const option = document.createElement('option');
-              option.value = time;
-              option.textContent = time;
-              timeSelect.appendChild(option);
-            });
+            const option = document.createElement('option');
+            option.textContent = 'No available slots';
+            option.disabled = true;
+            timeSelect.appendChild(option);
+            return;
           }
+          data.forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+          });
         })
         .catch(error => {
-          console.error('Error fetching times:', error);
+          console.error('Error:', error);
         });
     }
-  }
 
-  reasonSelect.addEventListener('change', loadAvailableTimes);
-  dateInput.addEventListener('change', loadAvailableTimes);
-});
+    dateInput.addEventListener('change', function () {
+      if (!isDateValid(dateInput.value)) {
+        alert("Clinica este închisă în zilele de duminică și de sărbători legale. Alege o altă zi.");
+        dateInput.value = "";
+        resetTimeOptions();
+      } else {
+        fetchAvailableTimes();
+      }
+    });
+
+    reasonSelect.addEventListener('change', function () {
+      if (dateInput.value && isDateValid(dateInput.value)) {
+        fetchAvailableTimes();
+      }
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const dateInput = document.getElementById('appointment_date');
+    const timeInput = document.getElementById('appointment_time');
+
+    form.addEventListener("submit", function (e) {
+      const dateVal = dateInput.value;
+      const timeVal = timeInput.value;
+
+      if (!dateVal || !timeVal) return;
+
+      const selectedDateTime = new Date(dateVal + "T" + timeVal);
+      const now = new Date();
+
+      if (selectedDateTime < now) {
+        alert("Nu poți face o programare în trecut.");
+        e.preventDefault();
+      }
+    });
+  });
 </script>
 
 </body>
