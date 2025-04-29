@@ -3,21 +3,24 @@ session_start();
 require_once '../includes/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $email = $_POST["email"];
-  $password = $_POST["password"];
+    $email = trim($_POST["email"]);
+    $password = trim($_POST["password"]);
 
-  $stmt = $conn->prepare("SELECT * FROM users WHERE email=? AND password=?");
-  $stmt->bind_param("ss", $email, $password);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    // Căutăm admin-ul după email
+    $stmt = $conn->prepare("SELECT * FROM admin WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $admin = $result->fetch_assoc();
 
-  if ($result->num_rows === 1) {
-    $_SESSION["admin_logged_in"] = true;
-    header("Location: dashboard.php");
-    exit;
-  } else {
-    echo "<script>alert('Invalid credentials'); window.location.href = 'login.php';</script>";
-  }
+    if ($admin && password_verify($password, $admin['password'])) {
+        $_SESSION["admin_logged_in"] = true;
+        $_SESSION["admin_email"] = $admin["email"];
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        echo "<script>alert('Invalid credentials'); window.location.href = 'login.php';</script>";
+    }
 }
 ?>
 
@@ -109,6 +112,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="text-center">
       <button type="submit" class="btn btn-login">Login</button>
     </div>
+    <div class="text-center mt-3">
+      <a href="forgot_password.php" style="font-size: 14px; color: #c89f68;">Forgot Password?</a>
+    </div>
+    <div class="text-center mt-2">
+      <em style="font-size: 13px; color: #6c757d;">Forgot your email? Please contact the clinic administrator.</em>
+    </div>
+
+
   </form>
 </div>
 

@@ -213,7 +213,7 @@
 
     dateInput.addEventListener('change', function () {
       if (!isDateValid(dateInput.value)) {
-        alert("Clinica este închisă în zilele de duminică și de sărbători legale. Alege o altă zi.");
+        alert("The clinic is closed on Sundays and public holidays. Please choose another day.");
         dateInput.value = "";
         resetTimeOptions();
       } else {
@@ -245,9 +245,9 @@
       const now = new Date();
 
       if (selectedDateTime < now) {
-        alert("Nu poți face o programare în trecut.");
+        alert("You cannot book an appointment in the past.");
         e.preventDefault();
-      }
+      } 
     });
   });
 </script>
