@@ -5,7 +5,7 @@
 
 ## 📘 Descriere | Description
 
-**RO:** VetCare este o aplicație web dedicată programărilor veterinare, care permite utilizatorilor să rezerve online un interval pentru consultație, vaccinare, operații sau alte servicii oferite de o clinică veterinară.
+**RO:** VetCare este o aplicație web dedicată programărilor într-o clinică veterinară , care permite utilizatorilor să rezerve online un interval pentru consultație, vaccinare, operații sau alte servicii oferite de o clinică veterinară.
 
 **EN:** VetCare is a web application designed for veterinary clinics, allowing users to easily book appointments online for consultations, vaccinations, surgeries, or grooming services.
 
