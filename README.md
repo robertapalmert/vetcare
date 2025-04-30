@@ -35,7 +35,7 @@
 
 ## 🧪 Testare | Testing
 
-**RO:** Aplicația este optimizată pentru desktop, tabletă și mobil. Validările funcționează atât pe client (JavaScript), cât și pe server (PHP).  
+**RO:** Aplicația este optimizată pentru desktop, tabletă și mobil. Validările funcționează atât pe partea de client (JavaScript), cât și pe partea de server (PHP).  
 **EN:** Fully optimized for desktop, tablet, and mobile. Validations work both on client side (JavaScript) and server side (PHP).
 
 ---
