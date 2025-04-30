@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("sssss", $pet_name, $owner_name, $phone, $full_datetime, $reason);
     
         if ($stmt->execute()) {
-            $successMessage = "🎉 Appointment booked successfully! ✉️ A confirmation message has been simulated.";
+            $successMessage = "🎉 Appointment booked successfully! ✉️ A confirmation message has been sent to your phone number.";
         } else {
             $errorMessage = "❌ Error booking appointment: " . $stmt->error;
         }

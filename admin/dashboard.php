@@ -131,7 +131,8 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
     </select>
 
     <button type="submit" class="btn" style="background-color: #c89f68; color: white; border-radius: 30px; padding: 8px 20px; font-weight: 500;">Filter</button>
-    <a href="dashboard.php" class="btn" style="background-color: #6c757d; color: white; border-radius: 30px; padding: 8px 20px; font-weight: 500;">Reset</a>
+    <a href="dashboard.php" class="btn" style="background-color: #5cb85c;
+; color: white; border-radius: 30px; padding: 8px 20px; font-weight: 500;">Reset</a>
   </form>
 
   <!-- Tabel cu Scroll -->
@@ -186,7 +187,7 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
               Edit
             </a>
             <a href="delete_appointment.php?id=<?= $row['id'] ?>" class="btn btn-sm"
-               onclick="return confirm('Are you sure you want to cancel this appointment?');"
+               onclick="return confirm('Are you sure you want to cancel this appointment? It will be deleted permanently!');"
                style="background-color: #dc3545; color: white; border-radius: 30px; padding: 6px 14px; font-weight: 500;">
               Cancel
             </a>

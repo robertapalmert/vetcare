@@ -91,7 +91,6 @@
 <div class="container my-5">
   <h3 class="text-center mb-4">Book a Veterinary Appointment</h3>
   <form action="book.php" method="POST">
-
     <div class="form-group mb-3">
       <label for="pet_name">Pet Name</label>
       <input type="text" class="form-control" name="pet_name" id="pet_name" required />
@@ -137,14 +136,24 @@
       </button>
     </div>
   </form>
+
+  <div id="validation-message" class="text-center mt-4"></div>
 </div>
 
 <footer>
   <small>VetCare Clinic &copy; 2025 - All rights reserved</small>
 </footer>
 
-<!-- Script pentru validarea datei și ore disponibile -->
 <script>
+  function showValidationMessage(message) {
+    const container = document.getElementById("validation-message");
+    container.innerHTML = `
+      <div class="alert alert-danger" style="border-radius: 15px; font-weight: 500;">
+        ❗ ${message}
+      </div>
+    `;
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     const reasonSelect = document.getElementById('reason');
     const dateInput = document.getElementById('appointment_date');
@@ -181,8 +190,6 @@
       const service = reasonSelect.value;
       const duration = getServiceDuration(service);
 
-      console.log(`Trimit: date=${date}, duration=${duration}`);
-
       if (!date || !service || !isDateValid(date)) {
         resetTimeOptions();
         return;
@@ -213,7 +220,7 @@
 
     dateInput.addEventListener('change', function () {
       if (!isDateValid(dateInput.value)) {
-        alert("The clinic is closed on Sundays and public holidays. Please choose another day.");
+        showValidationMessage("The clinic is closed on Sundays and public holidays. Please choose another day.");
         dateInput.value = "";
         resetTimeOptions();
       } else {
@@ -226,18 +233,11 @@
         fetchAvailableTimes();
       }
     });
-  });
-</script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
-    const dateInput = document.getElementById('appointment_date');
-    const timeInput = document.getElementById('appointment_time');
-
     form.addEventListener("submit", function (e) {
       const dateVal = dateInput.value;
-      const timeVal = timeInput.value;
+      const timeVal = timeSelect.value;
 
       if (!dateVal || !timeVal) return;
 
@@ -245,9 +245,9 @@
       const now = new Date();
 
       if (selectedDateTime < now) {
-        alert("You cannot book an appointment in the past.");
         e.preventDefault();
-      } 
+        showValidationMessage("You cannot book an appointment in the past.");
+      }
     });
   });
 </script>
