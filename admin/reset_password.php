@@ -2,14 +2,18 @@
 session_start();
 require_once '../includes/db.php';
 
-$email = $_GET['email'] ?? '';
+$email = $_GET['email'] ?? ''; // Preluăm emailul din URL (simulat)
 $message = "";
 
+// Când formularul este trimis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = trim($_POST["new_password"]);
+
+    // Verificăm lungimea parolei
     if (strlen($newPassword) < 6) {
         $message = "Password must be at least 6 characters!";
     } else {
+        // Parola este criptată și salvată în baza de date
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("UPDATE admin SET password = ? WHERE email = ?");
         $stmt->bind_param("ss", $hashedPassword, $email);
@@ -25,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reset Password - VetCare</title>
+  <link rel="icon" type="image/png" href="/vetcare_project/assets/images/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {

@@ -5,6 +5,7 @@ $successMessage = "";
 $errorMessage = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Preluare date din formular
     $pet_name = trim($_POST["pet_name"]);
     $owner_name = trim($_POST["owner_name"]);
     $phone = trim($_POST["phone"]);
@@ -12,23 +13,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $appointment_time = trim($_POST["appointment_time"]);
     $reason = trim($_POST["reason"]);
 
+    // Combinare dată + oră
     $full_datetime = $appointment_date . ' ' . $appointment_time;
-
     $selected_timestamp = strtotime($full_datetime);
 
-        // Salvare în baza de date
-        $stmt = $conn->prepare("INSERT INTO appointments (pet_name, owner_name, phone, appointment_date, reason) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $pet_name, $owner_name, $phone, $full_datetime, $reason);
-    
-        if ($stmt->execute()) {
-            $successMessage = "🎉 Appointment booked successfully! ✉️ A confirmation message has been sent to your phone number.";
-        } else {
-            $errorMessage = "❌ Error booking appointment: " . $stmt->error;
-        }
-    
-        $stmt->close();
-        $conn->close();
+    // Inserare în baza de date
+    $stmt = $conn->prepare("INSERT INTO appointments (pet_name, owner_name, phone, appointment_date, reason) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $pet_name, $owner_name, $phone, $full_datetime, $reason);
+
+    if ($stmt->execute()) {
+        $successMessage = "🎉 Appointment booked successfully! ✉️ A confirmation message has been sent to your phone number.";
+    } else {
+        $errorMessage = "❌ Error booking appointment: " . $stmt->error;
     }
+
+    $stmt->close();
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <title>Booking Result - VetCare</title>
+  <link rel="icon" type="image/png" href="/vetcare_project/assets/images/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -60,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
+<!-- Afișare mesaj de succes sau eroare -->
 <div class="message-box">
   <?php if (!empty($successMessage)): ?>
     <div class="alert alert-success" style="font-weight: 500;">

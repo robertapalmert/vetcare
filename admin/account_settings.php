@@ -2,6 +2,7 @@
 session_start();
 require_once '../includes/db.php';
 
+// Verifică dacă adminul este autentificat
 if (!isset($_SESSION["admin_logged_in"])) {
     header("Location: login.php");
     exit;
@@ -18,17 +19,27 @@ $admin = $result->fetch_assoc();
 
 // Procesare formular
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Actualizare email
     if (!empty($_POST["new_email"])) {
         $newEmail = trim($_POST["new_email"]);
-        $stmt = $conn->prepare("UPDATE admin SET email = ? WHERE id = ?");
-        $stmt->bind_param("si", $newEmail, $admin['id']);
-        $stmt->execute();
-        $_SESSION["admin_email"] = $newEmail;
-        $emailMessage = "Email updated successfully!";
+
+        // Verificare dacă emailul este valid
+        if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+            $emailMessage = "Invalid email format!";
+        } else {
+            $stmt = $conn->prepare("UPDATE admin SET email = ? WHERE id = ?");
+            $stmt->bind_param("si", $newEmail, $admin['id']);
+            $stmt->execute();
+            $_SESSION["admin_email"] = $newEmail;
+            $emailMessage = "Email updated successfully!";
+        }
     }
 
+    // Actualizare parolă
     if (!empty($_POST["new_password"])) {
         $newPassword = trim($_POST["new_password"]);
+
         if (strlen($newPassword) < 6) {
             $passwordMessage = "Password must be at least 6 characters!";
         } else {
@@ -48,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings - VetCare</title>
+  <link rel="icon" type="image/png" href="/vetcare_project/assets/images/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -91,33 +103,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
+<!-- Cutie cu formularul pentru setările contului -->
 <div class="settings-box">
   <h3 class="text-center mb-4">Account Settings</h3>
 
   <form method="POST">
+    <!-- Afișare email curent -->
     <div class="mb-3">
-      <label>Current Email:</label>
-      <input type="email" class="form-control" value="<?= htmlspecialchars($admin['email']) ?>" disabled>
+      <label for="current_email">Current Email:</label>
+      <input type="email" class="form-control" id="current_email" value="<?= htmlspecialchars($admin['email']) ?>" disabled>
     </div>
+
+    <!-- Câmp pentru email nou -->
     <div class="mb-3">
-      <label>New Email:</label>
-      <input type="email" name="new_email" class="form-control" placeholder="Enter new email">
+      <label for="new_email">New Email:</label>
+      <input type="email" name="new_email" id="new_email" class="form-control" placeholder="Enter new email">
       <?php if ($emailMessage): ?>
-        <div class="message text-success"><?= $emailMessage ?></div>
+        <div class="message <?= strpos($emailMessage, 'success') !== false ? 'text-success' : 'text-danger' ?>">
+          <?= $emailMessage ?>
+        </div>
       <?php endif; ?>
     </div>
+
     <hr>
+
+    <!-- Câmp pentru parolă nouă -->
     <div class="mb-3">
-      <label>New Password:</label>
-      <input type="password" name="new_password" class="form-control" placeholder="Enter new password">
+      <label for="new_password">New Password:</label>
+      <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Enter new password">
+      <div class="form-text">Password must be at least 6 characters.</div>
       <?php if ($passwordMessage): ?>
         <div class="message <?= strpos($passwordMessage, 'success') !== false ? 'text-success' : 'text-danger' ?>">
           <?= $passwordMessage ?>
         </div>
       <?php endif; ?>
     </div>
-    <div class="text-center">
-      <button type="submit" class="btn btn-save">Save Changes</button>
+
+    <!-- Butoane salvare / revenire -->
+    <div class="text-center mt-4">
+      <button type="submit" class="btn" style="background-color:#5cb85c; color:white; font-weight:500; padding: 8px 20px; border-radius: 30px;">
+        Save Changes
+      </button>
+      <a href="dashboard.php" class="btn" style="background-color: #c89f68; color: white; font-weight: 500; padding: 8px 20px; border-radius: 30px; margin-left: 10px;">
+        Cancel
+      </a>
     </div>
   </form>
 </div>

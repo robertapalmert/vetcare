@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VetCare - Home</title>
+  <link rel="icon" type="image/png" href="/vetcare_project/assets/images/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -72,18 +73,7 @@
       transform: translateY(-3px);
       box-shadow: 0 6px 14px rgba(0,0,0,0.25);
     }
-
-    .paw-icon {
-      font-size: 1.6rem;
-      transform: rotate(-20deg);
-      background-color: #fff3e0;
-      border-radius: 50%;
-      padding: 5px 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      color: #a36c29;
-      margin-right: 10px;
-    }
-
+    
     .info-card {
       background-color: white;
       border-radius: 15px;
@@ -106,9 +96,15 @@
 </head>
 <body>
 
+<!-- Antetul cu logo-ul și meniul de navigare -->
 <header>
   <div class="container d-flex justify-content-between align-items-center">
-    <h2 class="mb-0">VetCare</h2>
+    <h2 class="mb-0 d-flex align-items-center">
+      <a href="/vetcare_project/public/index.html" class="d-flex align-items-center" style="text-decoration: none;">
+        <img src="/vetcare_project/assets/images/logo.png" alt="VetCare Logo" style="height: 36px; margin-right: 10px;">
+        <span style="color: white; font-weight: bold;">VetCare</span>
+      </a>
+    </h2>
     <nav>
       <a href="index.html" class="nav-link d-inline">Home</a>
       <a href="/vetcare_project/public/book.html" class="nav-link d-inline">Book Appointment</a>
@@ -117,6 +113,7 @@
   </div>
 </header>
 
+<!-- Secțiunea principală cu imaginea eroului și mesajul de întâmpinare -->
 <div class="container main-section">
   <div class="hero-wrapper">
     <img src="/vetcare_project/assets/images/happy-labrador.jpg" alt="Happy Labrador" class="hero-img" />
@@ -125,12 +122,16 @@
   <h1 class="mb-3">Welcome to VetCare</h1>
   <p class="lead mb-4">A place where your pet's health comes first. Friendly, professional, and full of love!</p>
 
+  <!-- Butonul de programare -->
   <div class="text-center mb-5">
     <a href="book.html" class="btn btn-lg d-inline-flex align-items-center gap-2 book-btn">
-      <span class="paw-icon">🐾</span> Book Appointment
+      <img src="/vetcare_project/assets/images/logo.png" alt="VetCare logo" style="height: 28px;" />
+      Book Appointment
     </a>
   </div>
 
+
+  <!-- Trei carduri cu informații utile: program, contact, servicii -->
   <div class="row text-center g-4 mt-4">
     <div class="col-md-4">
       <div class="info-card p-4">
@@ -159,6 +160,7 @@
   </div>
 </div>
 
+<!-- Footer-ul aplicației -->
 <footer>
   <small>VetCare Clinic &copy; 2025 - All rights reserved</small>
 </footer>

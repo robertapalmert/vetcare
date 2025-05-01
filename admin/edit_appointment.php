@@ -2,11 +2,13 @@
 session_start();
 require_once '../includes/db.php';
 
+// Verificare autentificare admin
 if (!isset($_SESSION["admin_logged_in"])) {
   header("Location: login.php");
   exit;
 }
 
+// Verificare existență ID programare
 if (!isset($_GET['id'])) {
   header("Location: dashboard.php");
   exit;
@@ -23,10 +25,16 @@ if (!$data) {
   exit;
 }
 
-$holidays = ['2025-01-01', '2025-04-20', '2025-12-25'];
-$error = "";
-$clientSideError = "";
+// Obținem sărbătorile legale din DB
+$holidays = [];
+$res = $conn->query("SELECT holiday_date FROM holidays");
+while ($row = $res->fetch_assoc()) {
+  $holidays[] = $row['holiday_date'];
+}
 
+$error = "";
+
+// Procesare formular salvare modificări
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $pet_name = trim($_POST['pet_name']);
   $owner_name = trim($_POST['owner_name']);
@@ -43,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $day_of_week = date('w', strtotime($appointment_date));
     $formatted_date = date('Y-m-d', strtotime($appointment_date));
 
+    // Validări server-side
     if ($selected_timestamp < time()) {
       $error = "You cannot set an appointment in the past.";
     } elseif ($day_of_week == 0 || in_array($formatted_date, $holidays)) {
@@ -76,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <title>Edit Appointment - VetCare</title>
+  <link rel="icon" type="image/png" href="/vetcare_project/assets/images/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -155,12 +165,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script>
+  // Injectăm sărbătorile legale din PHP în JS
+  const holidays = <?= json_encode($holidays) ?>;
+
   document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('appointment_date');
     const reasonSelect = document.getElementById('reason');
     const timeSelect = document.getElementById('appointment_time');
     const errorDiv = document.getElementById('clientError');
-    const holidays = ['2025-01-01', '2025-04-20', '2025-12-25'];
     const currentId = <?= $id ?>;
     const today = new Date().toISOString().split('T')[0];
     dateInput.setAttribute('min', today);
@@ -189,9 +201,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function showClientError(message) {
       errorDiv.textContent = message;
       errorDiv.style.display = 'block';
-      setTimeout(() => {
-        errorDiv.style.display = 'none';
-      }, 5000);
     }
 
     function fetchAvailableTimes() {
@@ -236,12 +245,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         dateInput.value = "";
         resetTimeOptions();
       } else {
+        errorDiv.style.display = 'none';
         fetchAvailableTimes();
       }
     });
 
     reasonSelect.addEventListener('change', fetchAvailableTimes);
 
+    // Preîncărcăm orele disponibile dacă există deja o dată selectată
     if (dateInput.value && reasonSelect.value) {
       fetchAvailableTimes();
     }

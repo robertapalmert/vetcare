@@ -4,19 +4,21 @@ require_once '../includes/db.php';
 
 $message = "";
 
+// Verifică dacă s-a trimis formularul
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
 
+    // Caută adminul după email
     $stmt = $conn->prepare("SELECT * FROM admin WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
     $admin = $result->fetch_assoc();
 
+    // Dacă emailul există, afișează un link de resetare (simulat)
     if ($admin) {
-        // Simulăm generarea unui link de resetare
         $reset_link = "http://localhost/vetcare_project/admin/reset_password.php?email=" . urlencode($email);
-        $message = "Reset link (simulat): <a href='$reset_link'>Reset Your Password</a>";
+        $message = "Reset link (simulated): <a href='$reset_link'>Reset Your Password</a>";
     } else {
         $message = "No admin found with that email address.";
     }
@@ -29,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Forgot Password - VetCare</title>
+  <link rel="icon" type="image/png" href="/vetcare_project/assets/images/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
@@ -63,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="forgot-box">
   <h3 class="text-center mb-4">Forgot Password</h3>
 
+  <!-- Formular de resetare -->
   <form method="POST">
     <div class="mb-3">
       <label>Email Address:</label>
@@ -73,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </form>
 
+  <!-- Afișare mesaj -->
   <?php if ($message): ?>
     <div class="mt-4 text-center">
       <?= $message ?>
