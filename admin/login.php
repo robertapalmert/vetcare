@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </h2>
     <nav>
       <a href="/vetcare_project/public/index.html" class="nav-link d-inline">Home</a>
-      <a href="/vetcare_project/public/book.html" class="nav-link d-inline">Book Appointment</a>
+      <a href="/vetcare_project/public/book.php" class="nav-link d-inline">Book Appointment</a>
     </nav>
   </div>
 </header>

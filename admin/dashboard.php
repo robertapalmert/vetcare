@@ -97,7 +97,7 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
       style="max-width: 400px; margin: 0 auto; border-radius: 30px; padding: 10px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
   </div>
 
-  <!-- Statistici rapide (dreapta sus) -->
+  <!-- Statistici  -->
   <div class="d-flex justify-content-end mb-3 px-3" style="font-weight: 500;">
     <div class="me-4">📅 Today: <?= $appointmentsToday ?></div>
     <div>📋 Total: <?= $totalAppointments ?></div>
