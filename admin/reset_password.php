@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("UPDATE admin SET password = ? WHERE email = ?");
         $stmt->bind_param("ss", $hashedPassword, $email);
         $stmt->execute();
-        $message = "Password has been reset! <a href='login.php'>Go to Login</a>";
+        $message = "Password has been reset! <a href='login.php' class='reset-link'>Go to Login</a>";
     }
 }
 ?>
@@ -56,7 +56,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       border-radius: 30px;
       padding: 10px 25px;
       font-weight: 600;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
+
+    .btn-save:hover {
+      background-color: #dcb177;  
+      color: black !important;   
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      text-decoration: none;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: #d4a75a !important;
+      box-shadow: 0 0 0 0.2rem rgba(212, 167, 90, 0.25);
+      outline: none;
+    }
+    .reset-link {
+      color: #c89f68;
+      font-weight: normal;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .reset-link:hover {
+      text-decoration: underline;
+      color: #c89f68;
+    }
+
   </style>
 </head>
 <body>

@@ -112,6 +112,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       text-decoration: none;
     }
     footer { background-color: #f8f9fa; text-align: center; padding: 15px 0; margin-top: auto; }
+
+    .submit-btn {
+  background-color: #c89f68;
+  color: white;
+  border-radius: 30px;
+  padding: 12px 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+  border: none;
+}
+
+.submit-btn:hover {
+  background-color: #dcb177;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  color: black !important;
+  text-decoration: none;
+}
+
   </style>
 </head>
 <body>
@@ -176,9 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div class="text-center">
-      <button type="submit" class="btn btn-lg d-inline-flex align-items-center gap-2 book-btn">
-        <img src="../assets/images/logo.png" alt="VetCare logo" style="height: 28px;" /> Submit
-      </button>
+      <button type="submit" class="submit-btn">Submit</button>
     </div>
   </form>
 

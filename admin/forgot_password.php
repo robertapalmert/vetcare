@@ -8,19 +8,22 @@ $message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
 
-    // Caută adminul după email
-    $stmt = $conn->prepare("SELECT * FROM admin WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $admin = $result->fetch_assoc();
-
-    // Dacă emailul există, afișează un link de resetare (simulat)
-    if ($admin) {
-        $reset_link = "http://localhost/vetcare_project/admin/reset_password.php?email=" . urlencode($email);
-        $message = "Reset link (simulated): <a href='$reset_link'>Reset Your Password</a>";
+    if ($email === "") {
+        $message = "Please enter an email address.";
     } else {
-        $message = "No admin found with that email address.";
+        // Caută adminul după email
+        $stmt = $conn->prepare("SELECT * FROM admin WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $admin = $result->fetch_assoc();
+
+        if ($admin) {
+            $reset_link = "http://localhost/vetcare_project/admin/reset_password.php?email=" . urlencode($email);
+            $message = "Reset link (simulated): <a href='$reset_link' class='reset-link'>Reset Your Password</a>";
+        } else {
+            $message = "No admin found with that email address.";
+        }
     }
 }
 ?>
@@ -58,7 +61,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       border-radius: 30px;
       padding: 10px 25px;
       font-weight: 600;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
+    .btn-reset:hover {
+      background-color: #dcb177;  
+      color: black !important;   
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      text-decoration: none;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #d4a75a !important;
+      box-shadow: 0 0 0 0.2rem rgba(212, 167, 90, 0.25);
+      outline: none;
+    }
+
+    .reset-link {
+      color: #c89f68;
+      font-weight: normal;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .reset-link:hover {
+      text-decoration: underline;
+      color: #c89f68;
+    }
+
   </style>
 </head>
 <body>
@@ -77,12 +108,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </form>
 
-  <!-- Afișare mesaj -->
-  <?php if ($message): ?>
+  <!-- Afișare mesaj doar dacă formularul a fost trimis -->
+  <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($message)): ?>
     <div class="mt-4 text-center">
       <?= $message ?>
     </div>
   <?php endif; ?>
+
 </div>
 
 </body>

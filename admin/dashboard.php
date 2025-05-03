@@ -66,6 +66,13 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
       padding: 15px 0;
       margin-top: auto;
     }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #d4a75a !important;
+      box-shadow: 0 0 0 0.2rem rgba(212, 167, 90, 0.25);
+      outline: none;
+    }
+    
   </style>
 </head>
 <body>

@@ -80,11 +80,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     .btn-save {
-      background-color: #c89f68;
+      background-color: #5cb85c;
       color: white;
+      font-weight: 500;
+      padding: 8px 20px;
       border-radius: 30px;
-      padding: 10px 25px;
-      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-save:hover {
+      background-color: #4cae4c;
+      color: white;
     }
 
     .message {
@@ -99,6 +104,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .text-danger {
       color: red;
     }
+    .form-control:focus, .form-select:focus {
+      border-color: #d4a75a !important;
+      box-shadow: 0 0 0 0.2rem rgba(212, 167, 90, 0.25);
+      outline: none;
+    }
+
   </style>
 </head>
 <body>
@@ -141,9 +152,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Butoane salvare / revenire -->
     <div class="text-center mt-4">
-      <button type="submit" class="btn" style="background-color:#5cb85c; color:white; font-weight:500; padding: 8px 20px; border-radius: 30px;">
+      <button type="submit" class="btn btn-save">
         Save Changes
       </button>
+
       <a href="dashboard.php" class="btn" style="background-color: #c89f68; color: white; font-weight: 500; padding: 8px 20px; border-radius: 30px; margin-left: 10px;">
         Cancel
       </a>

@@ -2,6 +2,8 @@
 session_start();
 require_once '../includes/db.php';
 
+$error = "";
+
 // Verificăm dacă s-a trimis formularul
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
@@ -21,11 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: dashboard.php");
         exit;
     } else {
-        echo "<script>alert('Invalid credentials'); window.location.href = 'login.php';</script>";
+        $error = "Invalid email or password.";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,6 +76,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       transform: translateY(-2px);
       box-shadow: 0 6px 14px rgba(0,0,0,0.25);
     }
+    .form-control:focus, .form-select:focus {
+      border-color: #d4a75a !important;
+      box-shadow: 0 0 0 0.2rem rgba(212, 167, 90, 0.25);
+      outline: none;
+    }
+    .reset-link {
+      color: #c89f68;
+      font-weight: normal;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .reset-link:hover {
+      text-decoration: underline;
+      color: #c89f68;
+    }
     footer {
       background-color: #f8f9fa;
       text-align: center;
@@ -104,6 +120,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Formularul de autentificare -->
 <div class="login-box">
   <h3 class="text-center mb-4">Admin Login</h3>
+
+  <!-- Afișare mesaj de eroare dacă există -->
+  <?php if (!empty($error)): ?>
+    <div class="alert alert-danger text-center" style="border-radius: 15px; font-weight: 500;">
+      ❗ <?= htmlspecialchars($error) ?>
+    </div>
+  <?php endif; ?>
+
   <form method="POST">
     <div class="mb-3">
       <label>Email:</label>
@@ -117,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <button type="submit" class="btn btn-login">Login</button>
     </div>
     <div class="text-center mt-3">
-      <a href="forgot_password.php" style="font-size: 14px; color: #c89f68;">Forgot Password?</a>
+      <a href="forgot_password.php" class="reset-link">Forgot Password?</a>
     </div>
     <div class="text-center mt-2">
       <em style="font-size: 13px; color: #6c757d;">Forgot your email? Please contact the clinic administrator.</em>
