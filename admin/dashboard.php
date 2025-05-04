@@ -129,11 +129,12 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
     <select name="service" class="form-select" style="max-width: 200px;">
       <option value="">All Services</option>
       <?php
-      $services = ["Consultation", "Vaccination", "Surgery", "Grooming", "Others"];
-      foreach ($services as $service) {
+      $serviceRes = $conn->query("SELECT name FROM services ORDER BY name");
+      while ($s = $serviceRes->fetch_assoc()) {
+        $service = htmlspecialchars($s['name']);
         $selected = ($_GET['service'] ?? '') == $service ? 'selected' : '';
         echo "<option value='$service' $selected>$service</option>";
-      }
+      }      
       ?>
     </select>
     <button type="submit" class="btn" style="background-color: #c89f68; color: white; border-radius: 30px; padding: 8px 20px; font-weight: 500;">Filter</button>
@@ -150,7 +151,7 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
           <th>Owner</th>
           <th>Phone</th>
           <th>Date</th>
-          <th>Reason</th>
+          <th>Service</th>
           <th>Reminder</th>
           <th>Actions</th>
         </tr>
@@ -158,7 +159,10 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
       <tbody>
         <?php
         // Construire interogare cu filtre
-        $query = "SELECT * FROM appointments";
+        $query = "SELECT appointments.*, services.name AS service_name 
+           FROM appointments 
+           JOIN services ON appointments.service_id = services.id";
+
         $conditions = [];
 
         if (!empty($_GET['date'])) {
@@ -166,7 +170,7 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
         }
 
         if (!empty($_GET['service'])) {
-          $conditions[] = "reason = '" . $conn->real_escape_string($_GET['service']) . "'";
+          $conditions[] = "services.name = '" . $conn->real_escape_string($_GET['service']) . "'";
         }
 
         if ($conditions) {
@@ -183,7 +187,7 @@ $appointmentsToday = $conn->query("SELECT COUNT(*) AS today FROM appointments WH
           <td><?= htmlspecialchars($row['owner_name']) ?></td>
           <td><?= htmlspecialchars($row['phone']) ?></td>
           <td><?= $row['appointment_date'] ?></td>
-          <td><?= htmlspecialchars($row['reason']) ?></td>
+          <td><?= htmlspecialchars($row['service_name']) ?></td>
           <td>Reminder Scheduled</td>
           <td>
             <a href="edit_appointment.php?id=<?= $row['id'] ?>" class="btn btn-sm"

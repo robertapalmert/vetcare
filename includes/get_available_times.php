@@ -80,9 +80,10 @@ if ($count > 0) {
 $stmt = $conn->prepare("
     SELECT a.appointment_date, s.duration_minutes 
     FROM appointments a 
-    JOIN services s ON a.reason = s.name 
+    JOIN services s ON a.service_id = s.id 
     WHERE DATE(a.appointment_date) = ?
 ");
+
 $stmt->bind_param("s", $date);
 $stmt->execute();
 $result = $stmt->get_result();

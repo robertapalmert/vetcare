@@ -16,7 +16,12 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 
 // Obține programarea curentă
-$stmt = $conn->prepare("SELECT * FROM appointments WHERE id = ?");
+$stmt = $conn->prepare("
+  SELECT a.*, s.name AS service_name 
+  FROM appointments a
+  JOIN services s ON a.service_id = s.id 
+  WHERE a.id = ?
+");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $appointment = $stmt->get_result()->fetch_assoc();
@@ -27,7 +32,7 @@ if (!$appointment) {
 
 // Servicii disponibile
 $services = [];
-$result = $conn->query("SELECT name, duration_minutes FROM services ORDER BY name");
+$result = $conn->query("SELECT id, name, duration_minutes FROM services ORDER BY name");
 while ($row = $result->fetch_assoc()) {
   $services[] = $row;
 }
@@ -46,7 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $phone = trim($_POST['phone']);
   $appointment_date = trim($_POST['appointment_date']);
   $appointment_time = trim($_POST['appointment_time']);
-  $reason = trim($_POST['reason']);
+  $service_id = intval($_POST['service_id']);
+
 
   if (!$appointment_time) {
     $error = "Invalid appointment time.";
@@ -72,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "The selected time slot is already booked.";
       } else {
         // Salvare modificări
-        $stmt = $conn->prepare("UPDATE appointments SET pet_name=?, owner_name=?, phone=?, appointment_date=?, reason=? WHERE id=?");
-        $stmt->bind_param("sssssi", $pet_name, $owner_name, $phone, $full_datetime, $reason, $id);
+        $stmt = $conn->prepare("UPDATE appointments SET pet_name=?, owner_name=?, phone=?, appointment_date=?, service_id=? WHERE id=?");
+        $stmt->bind_param("ssssii", $pet_name, $owner_name, $phone, $full_datetime, $service_id, $id);
 
         if ($stmt->execute()) {
           header("Location: dashboard.php?updated=1");
@@ -161,16 +167,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <div class="mb-3">
       <label>Service</label>
-      <select name="reason" id="reason" class="form-select" required>
+      <select name="service_id" id="service_id" class="form-select" required>
         <option value="">Select a service</option>
         <?php foreach ($services as $service): ?>
-          <option value="<?= $service['name'] ?>"
+          <option value="<?= $service['id'] ?>"
             data-duration="<?= $service['duration_minutes'] ?>"
-            <?= $appointment['reason'] === $service['name'] ? 'selected' : '' ?>>
+            <?= $appointment['service_id'] == $service['id'] ? 'selected' : '' ?>>
             <?= $service['name'] ?> (<?= $service['duration_minutes'] ?> min)
           </option>
         <?php endforeach; ?>
       </select>
+
     </div>
     <div class="mb-3">
       <label>Available Time</label>
@@ -196,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    const reasonSelect = document.getElementById("reason");
+    const reasonSelect = document.getElementById("service_id");
     const dateInput = document.getElementById("appointment_date");
     const timeSelect = document.getElementById("appointment_time");
 

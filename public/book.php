@@ -3,7 +3,7 @@ require_once '../includes/db.php';
 
 // Obținem serviciile disponibile din baza de date
 $services = [];
-$result = $conn->query("SELECT name, duration_minutes FROM services ORDER BY name");
+$result = $conn->query("SELECT id, name, duration_minutes FROM services ORDER BY name");
 while ($row = $result->fetch_assoc()) {
     $services[] = $row;
 }
@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = trim($_POST["phone"]);
     $appointment_date = trim($_POST["appointment_date"]);
     $appointment_time = trim($_POST["appointment_time"]);
-    $reason = trim($_POST["reason"]);
+    $service_id = intval($_POST["service_id"]);
+
 
     $full_datetime = $appointment_date . ' ' . $appointment_time;
     $selected_timestamp = strtotime($full_datetime);
@@ -45,8 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = "The selected time slot is already booked.";
         } else {
             // Inserăm programarea
-            $stmt = $conn->prepare("INSERT INTO appointments (pet_name, owner_name, phone, appointment_date, reason) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $pet_name, $owner_name, $phone, $full_datetime, $reason);
+            $stmt = $conn->prepare("INSERT INTO appointments (pet_name, owner_name, phone, appointment_date, service_id) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssi", $pet_name, $owner_name, $phone, $full_datetime, $service_id);
+            
 
             if ($stmt->execute()) {
                 // Mesaj de succes + redirectare
@@ -113,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     footer { background-color: #f8f9fa; text-align: center; padding: 15px 0; margin-top: auto; }
 
-    .submit-btn {
+  .submit-btn {
   background-color: #c89f68;
   color: white;
   border-radius: 30px;
@@ -173,12 +175,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div class="form-group mb-3">
-      <label for="reason">Service / Reason</label>
-      <select name="reason" id="reason" class="form-select" required>
+      <label for="service_id">Service</label>
+      <select name="service_id" id="service_id" class="form-select" required>
         <option value="">Select a Service</option>
         <?php foreach ($services as $service): ?>
-          <option value="<?= $service['name'] ?>" data-duration="<?= $service['duration_minutes'] ?>">
-            <?= $service['name'] ?> (<?= $service['duration_minutes'] ?> min)
+          <option value="<?php echo $service['id']; ?>" data-duration="<?php echo $service['duration_minutes']; ?>">
+            <?= htmlspecialchars($service['name']) ?> (<?= $service['duration_minutes'] ?> min)
           </option>
         <?php endforeach; ?>
       </select>
@@ -219,7 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    const reasonSelect = document.getElementById("reason");
+    const reasonSelect = document.getElementById("service_id");
     const dateInput = document.getElementById("appointment_date");
     const timeSelect = document.getElementById("appointment_time");
     const today = new Date().toISOString().split("T")[0];
