@@ -53,6 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       color: white !important;
       margin-left: 25px;
       font-weight: 500;
+      white-space: nowrap;
     }
     .login-box {
       max-width: 500px;

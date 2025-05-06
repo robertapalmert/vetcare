@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       flex-direction: column;
     }
     header { background-color: #c89f68; color: white; padding: 15px 0; }
-    .nav-link { color: white !important; margin-left: 25px; font-weight: 500; }
+    .nav-link { color: white !important; margin-left: 25px; font-weight: 500; white-space: nowrap; }
     .container form {
       background-color: white;
       padding: 30px;
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       border-color: #c89f68;
       box-shadow: 0 0 0 0.2rem rgba(200, 159, 104, 0.4);
     }
-    .book-btn {
+    .submit-btn {
       background-color: #c89f68;
       color: white;
       border-radius: 30px;
@@ -106,34 +106,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       transition: all 0.3s ease-in-out;
       text-decoration: none;
     }
-    .book-btn:hover {
+    .submit-btn:hover {
       background-color: #dcb177;
       transform: translateY(-3px);
       box-shadow: 0 6px 14px rgba(0,0,0,0.25);
       color: white;
       text-decoration: none;
     }
+    
     footer { background-color: #f8f9fa; text-align: center; padding: 15px 0; margin-top: auto; }
-
-  .submit-btn {
-  background-color: #c89f68;
-  color: white;
-  border-radius: 30px;
-  padding: 12px 30px;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: all 0.3s ease-in-out;
-  text-decoration: none;
-  border: none;
-}
-
-.submit-btn:hover {
-  background-color: #dcb177;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-  color: black !important;
-  text-decoration: none;
-}
 
   </style>
 </head>
