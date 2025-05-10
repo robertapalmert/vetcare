@@ -16,8 +16,7 @@
 - HTML5, CSS3, Bootstrap 5  
 - JavaScript (validări / DOM handling)  
 - PHP (procesare backend)  
-- MySQL (bază de date / database)  
-- Google Fonts – Quicksand
+- MySQL (bază de date / database)
 
 ---
 
@@ -29,6 +28,7 @@
 - ✅ Căutare și filtrare după dată, serviciu, nume / Search and filter by date, service, name  
 - ✅ Editare și anulare programări / Edit & cancel appointments  
 - ✅ Resetare parolă admin / Forgot Password for admin  
+- ✅ Editare detalii cont administrator (email & parolă) / Admin account details can be edited (email, password)
 - ✅ Design responsive și ușor de folosit / Responsive, user-friendly design
 
 ---
