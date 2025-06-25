@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       background-color: #c89f68;
       color: white;
       border-radius: 30px;
-      padding: 12px 30px;
+      padding: 10px 25px;
       font-weight: 600;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       transition: all 0.3s ease-in-out;
@@ -108,9 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     .submit-btn:hover {
       background-color: #dcb177;
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-      color: white;
       text-decoration: none;
     }
     
@@ -180,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div class="text-center">
-      <button type="submit" class="submit-btn">Submit</button>
+      <button type="submit" class=" btn submit-btn">Submit</button>
     </div>
   </form>
 

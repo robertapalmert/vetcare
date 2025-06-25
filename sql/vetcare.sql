@@ -10,6 +10,14 @@ CREATE TABLE admin (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela servicii (serviciile oferite în clinică)
+
+CREATE TABLE services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    duration_minutes INT
+);
+
 -- Tabela programări
 
 CREATE TABLE appointments (
@@ -29,14 +37,7 @@ CREATE TABLE holidays (
     holiday_date DATE NOT NULL,
     name VARCHAR(255)
 );
-
--- Tabela servicii (serviciile oferite în clinică)
-CREATE TABLE services (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    duration_minutes INT
-);
-
+-- Tabela program clinică
 CREATE TABLE working_hours (
     id INT AUTO_INCREMENT PRIMARY KEY,
     day_of_week INT,
